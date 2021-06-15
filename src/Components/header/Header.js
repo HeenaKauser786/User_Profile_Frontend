@@ -64,7 +64,7 @@ export default function (props) {
               />
 
               {checkPre ? (
-              
+              <Link to="/">
                   <button
                     id="search"
                     className="btn btn-outline-success"
@@ -72,7 +72,7 @@ export default function (props) {
                   >
                     <i className="fa fa-search" aria-hidden="true"></i>
                   </button>
-                
+                  </Link>
               ) : (
                 <Link to={`/Search/${title}`}>
                   <button

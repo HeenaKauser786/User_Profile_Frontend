@@ -1,10 +1,21 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Login.css";
 
 export default function Login(props) {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
+  const [submit, setsubmit] = useState(false);
+
+  useEffect(() => {
+    if(email!==""&&password!==""){
+      setsubmit(true);
+      document.getElementById('errorForm').innerHTML=""
+    }else{
+      setsubmit(false);
+      document.getElementById('errorForm').innerHTML=""
+    }
+  }, [email,password])
 
   const user = {
     email: email,
@@ -31,7 +42,33 @@ export default function Login(props) {
       .catch((error) => console.log(error));
       localStorage.setItem("userName",email.substring(0,email.indexOf("@")));
   }
-
+  function emailValidation(data) {
+    if (data === "") {
+      document.getElementById("errorEmail").innerHTML =
+        "Email field should not be empty.";
+        setemail("");
+    } else if (!data.match("^[a-zA-Z0-9._%+-]+[a-zA-Z]+@gmail.com$")) {
+      document.getElementById("errorEmail").innerHTML = "Email is not correct.";
+      setemail("");
+    } else {
+      document.getElementById("errorEmail").innerHTML = "";
+      setemail(data);
+    }
+  }
+  function passValidation(data) {
+    if (data === "") {
+      document.getElementById("errorPass").innerHTML = "Password field is required.";
+      document.getElementById("errorPass").style.color = "red";
+      setpassword("");
+    }
+    else{
+      document.getElementById("errorPass").innerHTML = "";
+      setpassword(data);
+    } 
+  }
+  function formInvalid(){
+    document.getElementById("errorForm").innerHTML="Form is incomplete."
+  }
   return (
     <div>
       <div className="container">
@@ -42,31 +79,39 @@ export default function Login(props) {
                 <form action="">
                   <input
                     type="text"
-                    onChange={(e) => setemail(e.target.value)}
+                    onChange={(e) => emailValidation(e.target.value)}
                     placeholder="Username"
                     required
                   />
-
+                  <div style={{ textAlign: "left", marginTop: "-10px" }}>
+                    <p className="text-danger mx-4 fs-6" id="errorEmail"></p>
+                  </div>
                   <input
                     type="password"
-                    onChange={(e) => setpassword(e.target.value)}
+                    onChange={(e) => passValidation(e.target.value)}
                     placeholder="Password"
                     required
                   />
 
-                  <input type="checkbox" id="remember" />
+                  <div style={{ textAlign: "left", marginTop: "-12px" }}>
+                    <p className="text-danger mx-4" id="errorPass"></p>
+                  </div>
 
-                  <Link to="/">
-                    <button
-                      type="submit"
-                      onClick={fetchReq}
-                      className="btn-signin"
-                    >
-                      Sign In
-                    </button>
-                  </Link>
+                  <div>
+                    <p className="text-danger mx-4" id="errorForm"></p>
+                  </div>
+
+                  {submit ? (
+            <Link to="/">
+              <button onClick={fetchReq} type="submit" className="btn btn-signin">
+                      Login
+              </button>
+            </Link>
+          ) : (
+            <div className="btn btn-signin" onClick={formInvalid}>Login</div>
+          )}
                   <Link to="/register">
-                    <button type="submit" className="btn-signin">
+                    <button type="submit" className="btn btn-signin">
                       Register
                     </button>
                   </Link>

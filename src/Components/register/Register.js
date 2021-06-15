@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Register.css";
 
@@ -11,17 +11,26 @@ export default function Register() {
   const [age, setage] = useState("");
   const [submit, setsubmit] = useState(false);
 
+  useEffect(() => {
+    if(name!==""&&email!==""&&cpassword!==""&&phone!==""&&age!==""){
+      setsubmit(true);
+      document.getElementById('errorForm').innerHTML=""
+    }else{
+      setsubmit(false);
+      document.getElementById('errorForm').innerHTML=""
+    }
+  }, [name,email,cpassword,phone,age])
   function check() {
     console.log(name);
     console.log(email);
-    console.log(password);
+    console.log(cpassword);
     console.log(phone);
     console.log(age);
 
     const user = {
       name: `${name}`,
       email: `${email}`,
-      password: `${password}`,
+      password: `${cpassword}`,
       phone: `${phone}`,
       age: `${age}`,
     };
@@ -43,25 +52,35 @@ export default function Register() {
     if (data === "") {
       document.getElementById("errorName").innerHTML =
         "User name field should not be empty.";
+      setname("");
     } else if (!data.match("^([a-zA-Z]+(\\s[a-zA-Z]+)?)$")) {
       document.getElementById("errorName").innerHTML =
         "User name can only contain alphabets.<br > A space is allowed between first name and last name.";
+        setname("");
     } else {
       document.getElementById("errorName").innerHTML = "";
+      setname(data);
     }
   }
   function emailValidation(data) {
     if (data === "") {
       document.getElementById("errorEmail").innerHTML =
         "Email field should not be empty.";
+        setemail("");
     } else if (!data.match("^[a-zA-Z0-9._%+-]+[a-zA-Z]+@gmail.com$")) {
       document.getElementById("errorEmail").innerHTML = "Email is not correct.";
+      setemail("");
     } else {
       document.getElementById("errorEmail").innerHTML = "";
+      setemail(data);
     }
   }
   function passValidation(data) {
-    if (data !== "" && data.length < 5) {
+    if (data === "") {
+      document.getElementById("strongability").innerHTML = "Password field is required.";
+      document.getElementById("strongability").style.color = "red";
+    } 
+    else if (data !== "" && data.length < 5) {
       document.getElementById("strongability").innerHTML = "Weak password...";
       document.getElementById("strongability").style.color = "red";
     } else if (data !== "" && data.length < 9) {
@@ -72,6 +91,7 @@ export default function Register() {
       document.getElementById("strongability").style.color = "lightgreen";
     } else {
       document.getElementById("strongability").innerHTML = "";
+      
     }
 
     if (data === "") {
@@ -91,21 +111,60 @@ export default function Register() {
     }
   }
 
-  function cPassValidation(data){
-      if(data!==document.getElementById("password").value){
-        document.getElementById("errorCPass").innerHTML = "password mismatch.";
-        document.getElementById("errorCPass").style.color="red";
-      }else{
-        document.getElementById("errorCPass").innerHTML = "password matched.";
-        document.getElementById("errorCPass").style.color="green";
-      }
-
+  function cPassValidation(data) {
+    if (data !== document.getElementById("password").value) {
+      document.getElementById("errorCPass").innerHTML = "password mismatch.";
+      document.getElementById("errorCPass").style.color = "red";
+      setcpassword("");
+    } else {
+      document.getElementById("errorCPass").innerHTML = "password matched.";
+      document.getElementById("errorCPass").style.color = "green";
+      setcpassword(data);
+    }
   }
 
-  function ageValidation(data){
-    
+  function ageValidation(data) {
+    if (data === "") {
+      document.getElementById("errorAge").innerHTML =
+        "Age field should not be empty.";
+        setage("");
+    } else if (data < 1 || data > 100) {
+      document.getElementById("errorAge").innerHTML = "Invalid age.";
+      setage("");
+    } else {
+      document.getElementById("errorAge").innerHTML = "";
+      setage(data);
+    }
   }
 
+  function phoneValidation(data) {
+    if (data === "") {
+      document.getElementById("errorPhone").innerHTML =
+        "Phone field should not be empty.";
+        setphone("");
+    } else if (data.match("[a-zA-Z\\W]")) {
+      document.getElementById("errorPhone").innerHTML =
+        "Please type only digits.";
+        setphone("");
+    } else if (data.length < 10) {
+      document.getElementById("errorPhone").innerHTML = "Less than 10 digits.";
+      setphone("");
+    } else if (data.length === 10 && !data.match("^[6-9][0-9]{9}$")) {
+      document.getElementById("errorPhone").innerHTML =
+        "Invalid mobile number format.";
+        setphone("");
+    } else if (data.length > 10) {
+      document.getElementById("errorPhone").innerHTML = "More than 10 digits.";
+      setphone("");
+    } else {
+      document.getElementById("errorPhone").innerText = "";
+      setphone(data);
+    }
+  }
+
+  function formInvalid(){
+    document.getElementById("errorForm").innerHTML="Form is incomplete."
+  }
   return (
     <div id="formContainer">
       <form id="form" className="rounded shadow" action="#" method="POST">
@@ -126,7 +185,6 @@ export default function Register() {
               className="form-control"
               onChange={(e) => nameValidation(e.target.value)}
               name="fName"
-              pattern="^[a-zA-Z]+(\\s[a-zA-Z]+)?$"
               id="name"
               placeholder="Enter name"
               required
@@ -142,7 +200,6 @@ export default function Register() {
               className="form-control"
               onChange={(e) => emailValidation(e.target.value)}
               name="email"
-              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
               id="email"
               placeholder="Enter Email Address"
               required
@@ -178,7 +235,6 @@ export default function Register() {
                 required
               />
             ) : (
-              
               <input
                 type="password"
                 className="form-control"
@@ -188,7 +244,6 @@ export default function Register() {
                 placeholder=" Confirm Password"
                 disabled
               />
-              
             )}
             <div style={{ textAlign: "left", marginTop: "-10px" }}>
               <p className="mx-2" id="errorCPass"></p>
@@ -204,21 +259,27 @@ export default function Register() {
               placeholder="Enter Age"
               required
             />
-
+            <div style={{ textAlign: "left", marginTop: "-10px" }}>
+              <p className="mx-2 text-danger" id="errorAge"></p>
+            </div>
             <input
               className="form-control"
               type="mobile"
-              onChange={(e) => setphone(e.target.value)}
+              onChange={(e) => phoneValidation(e.target.value)}
               pattern="[0-9]{10}"
               name="phone"
               id="phone"
               placeholder="Enter Mobile  Number"
               required
             />
+            <div style={{ textAlign: "left", marginTop: "-10px" }}>
+              <p className="mx-2 text-danger" id="errorPhone"></p>
+            </div>
           </div>
-
-          <br />
-          <br />
+          
+          <div>
+              <p className="mx-2 text-danger" id="errorForm"></p>
+          </div>
 
           {submit ? (
             <Link to="/login">
@@ -231,7 +292,7 @@ export default function Register() {
               />
             </Link>
           ) : (
-            <input type="submit" className="btn" name="submit" id="submit" />
+            <div className="btn" id="submit" onClick={formInvalid}>Submit</div>
           )}
         </fieldset>
       </form>
