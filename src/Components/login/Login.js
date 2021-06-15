@@ -35,12 +35,13 @@ export default function Login(props) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.token);
+        console.log(data);
         localStorage.setItem("token", data.token);
         props.loginStatus(true);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error.status));
       localStorage.setItem("userName",email.substring(0,email.indexOf("@")));
+      localStorage.setItem("email",email);
   }
   function emailValidation(data) {
     if (data === "") {

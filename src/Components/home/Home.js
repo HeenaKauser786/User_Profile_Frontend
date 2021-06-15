@@ -50,7 +50,7 @@ export default function Home(props) {
 
   useEffect(() => {
     if(localStorage.getItem('token')!==null&&localStorage.getItem('token')!==undefined){
-      fetch(`http://localhost:8765/api/v1/movies/trending/${localStorage.getItem('userName')}@gmail.com`)
+      fetch(`http://localhost:8765/api/v1/movies/trending/${localStorage.getItem("email")}`)
       .then((result) => result.json())
       .then((res) => {
         console.log(res);

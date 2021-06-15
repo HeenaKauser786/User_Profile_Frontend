@@ -291,7 +291,7 @@ export default function MovieDetail() {
           {
             (localStorage.getItem('token')!==null&&localStorage.getItem('token')!==undefined)&&<div>
             { isFav ? (
-              <div className="text-left mt-3 mx-5" style={{textAlign:"left"}}>
+              <div className="text-left mt-3 mx-5 mb-5" style={{textAlign:"left"}}>
                 <div
                 className="d-inline"
                 style={{ textAlign: "left", fontFamily: "Lobster, cursive" }}
@@ -307,9 +307,9 @@ export default function MovieDetail() {
               </div>
               </div>
             ) : (
-              <div className="text-left mt-3 mx-5" style={{textAlign:"left"}}>
+              <div className="text-left mt-3 mx-5 mb-5" style={{textAlign:"left"}}>
                 <div
-                className="d-inline  mt-3"
+                className="d-inline  mt-3 "
                 style={{ textAlign: "left", fontFamily: "Lobster, cursive" }}
                 onClick={addFav}
               >
