@@ -114,7 +114,7 @@ export default function MovieDetail() {
 
 
   return (
-    <div className="container-fluid mt-3">
+    <div className="container-fluid mt-3 pb-5">
       <div className="position-relative">
         <div
           className="head"
@@ -140,14 +140,14 @@ export default function MovieDetail() {
                 <div className="title">
                   <h3>{movie.title}</h3>
                   <br></br>
-                  <div>
+                  {/* <div>
                     <i className="fa fa-heart" style={{ fontSize: "35px" }}></i>
                     <i
                       className="fa fa-floppy-o mx-4"
                       aria-hidden="true"
                       style={{ fontSize: "35px" }}
                     ></i>
-                  </div>
+                  </div> */}
                   <br></br>
                   <h4>Overview</h4>
                   <p>{movie.overview}</p>

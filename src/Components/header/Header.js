@@ -8,7 +8,7 @@ export default function (props) {
   function check(data) {
     if (data.length === 0) {
       setplaceholder("Please enter the movie");
-      
+
       setcheckPre(true);
     } else {
       setTitle(data);
@@ -31,26 +31,28 @@ export default function (props) {
           <span className="navbar-toggler-icon"></span>
         </button>
         <a className="navbar-brand" href="#">
-            <img
-              src={process.env.PUBLIC_URL + "/logo.png"}
-              width="50px"
-              height="40px"
-            />
-          </a>
+          <img
+            src={process.env.PUBLIC_URL + "/logo.png"}
+            width="50px"
+            height="40px"
+          />
+          <h5 className="text-white d-inline mx-2">Movie Cruiser</h5>
+        </a>
         <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-          
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item">
-              <Link to="/">
-                <button className="btn nav-link active" aria-current="page">
+          <ul className="navbar-nav me-auto mb-lg-0">
+            <li className="nav-item d-inline">
+              <Link to="/" className="btn nav-link">
+                <button className="btn nav-link d-inline" aria-current="page">
                   Home
                 </button>
               </Link>
             </li>
-            <li className="nav-item">
+            <li className="nav-item ">
               {props.loggedStatus ? (
-                <Link to="/favourite" className="btn nav-link lh-auto">
-                  Favourite
+                <Link to="/favourite" className="btn nav-link">
+                  <button className="btn nav-link d-inline" aria-current="page">
+                    Favourite
+                  </button>
                 </Link>
               ) : null}
             </li>
@@ -59,44 +61,54 @@ export default function (props) {
                 className="form-control me-2"
                 type="search"
                 placeholder={placeholder}
-                onChange={(e) =>check(e.target.value)}
+                onChange={(e) => check(e.target.value)}
                 aria-label="Search"
               />
 
               {checkPre ? (
-              <Link to="/">
+                <Link to="/">
                   <button
                     id="search"
                     className="btn btn-outline-success"
                     type="submit"
+                    style={{marginTop:'10px'}}
                   >
                     <i className="fa fa-search" aria-hidden="true"></i>
                   </button>
-                  </Link>
+                </Link>
               ) : (
                 <Link to={`/Search/${title}`}>
-                  <button
-                    className="btn btn-outline-success"
-                    type="submit"
-                  >
+                  <button id="search"
+                    className="btn btn-outline-success" type="submit" style={{marginTop:'10px'}}>
                     <i class="fa fa-search" aria-hidden="true"></i>
                   </button>
                 </Link>
               )}
             </form>
           </ul>
+
+          <ul className="navbar-nav ml-auto mb-lg-0">
           <li className="nav-item">
             {console.log(props.loggedStatus)}
             {props.loggedStatus ? (
+              <button className="btn nav-link d-inline" aria-current="page">
               <Link to="/logout" type="button" className="btn btn-light">
-                Logout
+                
+                  Logout
+              
               </Link>
+              </button>
             ) : (
+              <button className="btn nav-link d-inline" aria-current="page">
               <Link to="/login" type="button" className="btn btn-light">
-                Login
+                
+                  Login
+                
               </Link>
+              </button>
             )}
           </li>
+          </ul>
         </div>
       </div>
     </nav>

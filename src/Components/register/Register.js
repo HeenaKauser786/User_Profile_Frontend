@@ -1,5 +1,5 @@
-import React, { useState,useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect} from "react";
+import { useHistory } from "react-router-dom";
 import "./Register.css";
 
 export default function Register() {
@@ -9,33 +9,37 @@ export default function Register() {
   const [password, setpassword] = useState(false);
   const [phone, setphone] = useState("");
   const [age, setage] = useState("");
+  const [visibleLoginError, setvisibleLoginError] = useState(false);
   const [submit, setsubmit] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
-    if(name!==""&&email!==""&&cpassword!==""&&phone!==""&&age!==""){
+    if (
+      name !== "" &&
+      email !== "" &&
+      cpassword !== "" &&
+      phone !== "" &&
+      age !== ""
+    ) {
       setsubmit(true);
-      document.getElementById('errorForm').innerHTML=""
-    }else{
+      document.getElementById("errorForm").innerHTML = "";
+    } else {
       setsubmit(false);
-      document.getElementById('errorForm').innerHTML=""
+      document.getElementById("errorForm").innerHTML = "";
     }
-  }, [name,email,cpassword,phone,age])
+  }, [name, email, cpassword, phone, age, visibleLoginError]);
+
+  const user = {
+    name: `${name}`,
+    email: `${email}`,
+    password: `${cpassword}`,
+    phone: `${phone}`,
+    age: `${age}`,
+  };
+
   function check() {
-    console.log(name);
-    console.log(email);
-    console.log(cpassword);
-    console.log(phone);
-    console.log(age);
+    
 
-    const user = {
-      name: `${name}`,
-      email: `${email}`,
-      password: `${cpassword}`,
-      phone: `${phone}`,
-      age: `${age}`,
-    };
-
-    console.log(JSON.stringify(user));
     fetch("http://localhost:8765/api/v1/register", {
       method: "post",
       headers: {
@@ -44,10 +48,34 @@ export default function Register() {
       },
       body: JSON.stringify(user),
     })
-      .then((res) => res.json())
-      .then((data) => console.log(data));
+      .then((res) => {
+        console.log(res);
+        if (!res.ok) {
+          res.text().then((text) => {
+            console.log(text);
+            console.log("text");
+            setvisibleLoginError(true);
+            loginError(text);
+          });
+        } else {
+          console.log("else");
+          return res.json();
+        }
+      })
+      .then((data) => {
+        setTimeout(() => {
+          console.log("data"+data);
+        console.log("hell");
+        setvisibleLoginError(false);
+        history.push("/login");
+        }, 1000);
+      })
+      .catch((error) => console.log(error.status));
   }
 
+  function loginError(text) {
+    document.getElementById("loginErrorText").innerHTML = text;
+  }
   function nameValidation(data) {
     if (data === "") {
       document.getElementById("errorName").innerHTML =
@@ -56,7 +84,7 @@ export default function Register() {
     } else if (!data.match("^([a-zA-Z]+(\\s[a-zA-Z]+)?)$")) {
       document.getElementById("errorName").innerHTML =
         "User name can only contain alphabets.<br > A space is allowed between first name and last name.";
-        setname("");
+      setname("");
     } else {
       document.getElementById("errorName").innerHTML = "";
       setname(data);
@@ -66,7 +94,7 @@ export default function Register() {
     if (data === "") {
       document.getElementById("errorEmail").innerHTML =
         "Email field should not be empty.";
-        setemail("");
+      setemail("");
     } else if (!data.match("^[a-zA-Z0-9._%+-]+[a-zA-Z]+@gmail.com$")) {
       document.getElementById("errorEmail").innerHTML = "Email is not correct.";
       setemail("");
@@ -76,11 +104,7 @@ export default function Register() {
     }
   }
   function passValidation(data) {
-    if (data === "") {
-      document.getElementById("strongability").innerHTML = "Password field is required.";
-      document.getElementById("strongability").style.color = "red";
-    } 
-    else if (data !== "" && data.length < 5) {
+    if (data !== "" && data.length < 5) {
       document.getElementById("strongability").innerHTML = "Weak password...";
       document.getElementById("strongability").style.color = "red";
     } else if (data !== "" && data.length < 9) {
@@ -91,7 +115,6 @@ export default function Register() {
       document.getElementById("strongability").style.color = "lightgreen";
     } else {
       document.getElementById("strongability").innerHTML = "";
-      
     }
 
     if (data === "") {
@@ -127,7 +150,7 @@ export default function Register() {
     if (data === "") {
       document.getElementById("errorAge").innerHTML =
         "Age field should not be empty.";
-        setage("");
+      setage("");
     } else if (data < 1 || data > 100) {
       document.getElementById("errorAge").innerHTML = "Invalid age.";
       setage("");
@@ -141,18 +164,18 @@ export default function Register() {
     if (data === "") {
       document.getElementById("errorPhone").innerHTML =
         "Phone field should not be empty.";
-        setphone("");
+      setphone("");
     } else if (data.match("[a-zA-Z\\W]")) {
       document.getElementById("errorPhone").innerHTML =
         "Please type only digits.";
-        setphone("");
+      setphone("");
     } else if (data.length < 10) {
       document.getElementById("errorPhone").innerHTML = "Less than 10 digits.";
       setphone("");
     } else if (data.length === 10 && !data.match("^[6-9][0-9]{9}$")) {
       document.getElementById("errorPhone").innerHTML =
         "Invalid mobile number format.";
-        setphone("");
+      setphone("");
     } else if (data.length > 10) {
       document.getElementById("errorPhone").innerHTML = "More than 10 digits.";
       setphone("");
@@ -162,11 +185,21 @@ export default function Register() {
     }
   }
 
-  function formInvalid(){
-    document.getElementById("errorForm").innerHTML="Form is incomplete."
+  function formInvalid() {
+    document.getElementById("errorForm").innerHTML = "Form is incomplete.";
+  }
+
+  function closeLoginError() {
+    document.getElementById("loginError").innerHTML = "";
+    setvisibleLoginError(false)
   }
   return (
-    <div id="formContainer">
+    <div
+      id="formContainer"
+      style={{
+        backgroundImage: `url(${process.env.PUBLIC_URL}/image/registerBackground.jpg)`,
+      }}
+    >
       <form id="form" className="rounded shadow" action="#" method="POST">
         <fieldset>
           <h1
@@ -179,6 +212,23 @@ export default function Register() {
             Registration Form
           </h1>
 
+          {visibleLoginError && (
+            <div
+              id="loginError"
+              className="bg-danger mx-5 text-white p-2 rounded"
+            >
+              <div className="d-flex justify-content-between">
+                <div id="loginErrorText"></div>
+                <button
+                  type="button"
+                  onClick={closeLoginError}
+                  className="btn-close"
+                  data-bs-dismiss="custom"
+                  aria-label="Close"
+                ></button>
+              </div>
+            </div>
+          )}
           <div id="fullName">
             <input
               type="text"
@@ -276,23 +326,19 @@ export default function Register() {
               <p className="mx-2 text-danger" id="errorPhone"></p>
             </div>
           </div>
-          
+
           <div>
-              <p className="mx-2 text-danger" id="errorForm"></p>
+            <p className="mx-2 text-danger" id="errorForm"></p>
           </div>
 
           {submit ? (
-            <Link to="/login">
-              <input
-                type="submit"
-                className="btn"
-                name="submit"
-                onClick={check}
-                id="submit"
-              />
-            </Link>
+            <div className="btn" name="submit" onClick={check} id="submit">
+              Submit
+            </div>
           ) : (
-            <div className="btn" id="submit" onClick={formInvalid}>Submit</div>
+            <div className="btn" id="submit" onClick={formInvalid}>
+              Submit
+            </div>
           )}
         </fieldset>
       </form>

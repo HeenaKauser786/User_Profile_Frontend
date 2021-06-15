@@ -5,6 +5,8 @@ export default function Logout(props) {
   return (
     <div>
       {localStorage.removeItem("token")}
+      {localStorage.removeItem("userName")}
+      {localStorage.removeItem('email')}
       <Redirect to="/"></Redirect>
     </div>
   );

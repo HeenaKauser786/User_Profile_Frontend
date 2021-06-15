@@ -19,13 +19,12 @@ h2 {
   align-items: center;
   padding-top: 10vh;
   padding-bottom: 15vh;
-  background-image: url('../../registerBackground.jpg');
   background-position: center;
   background-size: cover;
 }
 #form {
   max-width: 600px;
-  background-image: linear-gradient(to right, #524d4d, #515d61 30%, #3e6672);
+  background-image:linear-gradient(to right, #657980, #64b2cc 30%, #657980);
 }
 fieldset {
   border-width: 5px;

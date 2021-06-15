@@ -43,8 +43,8 @@ export default function Favourite() {
 
   return (
     <div>
-      <div className="container-fluid bg-secondary py-2 text-white fs-5">Favourites</div>
-      <div className="container mt-3" data-testid="outerdiv">
+      
+      <div className="container mt-3" data-testid="outerdiv" style={{minHeight:"100vh",paddingBottom:"20vh"}}>
         <div className="row" data-testid="innerdiv">
           {user.length!==0&&user.map((item) => (
             <FavCard
@@ -55,9 +55,9 @@ export default function Favourite() {
             overview={item.overview}
             setLikeFunc={setLikeFunc}
             posterUrl={
-              "https://image.tmdb.org/t/p/original" + item.posterUrl
+              "https://image.tmdb.org/t/p/original" + item.poster_path
             }
-            movieid={item.movieId}
+            movieid={item.id}
             title={item.title}
             deleteFunc={deleteFunc}
             />
