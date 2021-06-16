@@ -68,7 +68,7 @@ export default function Home(props) {
   }, [triggerForLike]);
 
   return (
-    <div className="bg-dark text-light">
+    <div>
       <div
         id="carouselExampleCaptions"
         className="carousel slide"
