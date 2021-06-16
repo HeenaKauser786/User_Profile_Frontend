@@ -4,16 +4,19 @@ import Header from "./Components/header/Header";
 import Footer from "./Components/footer/Footer";
 import Home from "./Components/home/Home";
 import Login from "./Components/login/Login";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Switch,
+} from "react-router-dom";
 import Register from "./Components/register/Register";
 import SearchResult from "./Components/searchresult/SearchResult";
 import Favourite from "./Components/favourite/Favourite";
 import Logout from "./Components/logout/Logout";
 import MovieDetail from "./Components/moviedetail/MovieDetail";
 
-
 function App() {
- 
   const [status, setStatus] = useState(false);
 
   function loginStatusFunc(stat) {
@@ -32,7 +35,6 @@ function App() {
     }
   }, []);
   return (
-    
     <div className="App">
       <Router>
         <Header loggedStatus={status} />
@@ -48,19 +50,41 @@ function App() {
             component={() => <Login loginStatus={loginStatusFunc}></Login>}
           />
           <Route exact path="/register" component={Register} />
-          <Route exact path="/Search/:title" component={() => <SearchResult loggedStatus={status} />} />
-          <Route exact path="/favourite" component={Favourite} />
+          <Route exact path="/Search" component={() => <Redirect to="/" />} />
+          <Route
+            exact
+            path="/Search/:title"
+            component={() => <SearchResult loggedStatus={status} />}
+          />
+          <Route
+            exact
+            path="/favourite"
+            component={() =>
+              localStorage.getItem("token") &&
+              localStorage.getItem("token") !== "undefined" ? (
+                <Favourite />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
           <Route exact path="/movieDetail/:movieid" component={MovieDetail} />
           <Route
             exact
             path="/logout"
-            component={() => <Logout logoutStatus={logoutStatusFunc}></Logout>}
+            component={() =>
+              localStorage.getItem("token") &&
+              localStorage.getItem("token") !== "undefined" ? (
+                <Logout logoutStatus={logoutStatusFunc} />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
           ></Route>
         </Switch>
         <Footer />
       </Router>
     </div>
-   
   );
 }
 
