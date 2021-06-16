@@ -56,6 +56,7 @@ export default function Register() {
             console.log("text");
             setvisibleLoginError(true);
             loginError(text);
+            return null;
           });
         } else {
           console.log("else");
@@ -95,7 +96,7 @@ export default function Register() {
       document.getElementById("errorEmail").innerHTML =
         "Email field should not be empty.";
       setemail("");
-    } else if (!data.match("^[a-zA-Z0-9._%+-]+[a-zA-Z]+@gmail.com$")) {
+    } else if (!data.match("^[a-zA-Z0-9._%+-]+[a-zA-Z]+@[a-zA-Z]{3,}.(com|in|org)$")) {
       document.getElementById("errorEmail").innerHTML = "Email is not correct.";
       setemail("");
     } else {

@@ -60,6 +60,7 @@ export default function SearchResult(props) {
         <DisplayCard
           key={uuidv4()}
           setLikeFunc={setLikeFunc}
+          overview={movie.overview}
           likeCounts={movie.likeCount}
           isLiked = {movie.isLiked}
           posterUrl={"https://image.tmdb.org/t/p/original" + movie.poster_path}

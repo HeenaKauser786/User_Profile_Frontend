@@ -138,7 +138,7 @@ export default function MovieDetail() {
               </div>
               <div className="flex-grow-1 ms-3">
                 <div className="title">
-                  <h3>{movie.title}</h3>
+                  <h1 className="text-dark">{movie.title}</h1>
                   <br></br>
                   {/* <div>
                     <i className="fa fa-heart" style={{ fontSize: "35px" }}></i>

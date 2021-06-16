@@ -102,7 +102,7 @@ export default function FavCard(props) {
 
             <span className="mx-1 fs-5">{props.likeCounts}</span>
           </div>
-          <div className="text-white fw-bold bg-danger delete" onClick={deleteFunc}>
+          <div className="text-white fw-bold bg-danger delete rounded p-2" onClick={deleteFunc}>
                     Delete
         </div>
         </div>

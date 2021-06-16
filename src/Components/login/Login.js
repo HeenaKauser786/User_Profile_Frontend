@@ -150,7 +150,7 @@ export default function Login(props) {
                   </div>
 
                   {submit ? (
-                    
+                    <Link>
                       <div
                         onClick={fetchReq}
                         
@@ -158,11 +158,13 @@ export default function Login(props) {
                       >
                         Login
                       </div>
-                    
+                      </Link>
                   ) : (
+                    <Link>
                     <div className="btn btn-signin" onClick={formInvalid} >
                       Login
                     </div>
+                    </Link>
                   )}
                   <Link to="/register">
                     <button type="submit" className="btn btn-signin">
