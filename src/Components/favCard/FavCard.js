@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import "./FavCard.css";
 
 export default function FavCard(props) {
-  
+  toast.configure()
   function forLike() {
     
     if (props.isLiked === "false") {
-      console.log("setting true");
      
+      toast(`You liked ${props.title} movie.`,{autoClose:3000})
       
       const user = {
         title: props.title,
@@ -33,7 +35,7 @@ export default function FavCard(props) {
       });
     }
     else {
-        console.log("setting false");
+      toast(`disliked ${props.title} movie.`,{autoClose:3000})
       const user = {
         title: props.title,
         rating: props.rating,

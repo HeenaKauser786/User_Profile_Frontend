@@ -17,3 +17,11 @@
     background-color: rgb(119, 5, 5) !important;
     cursor: pointer;
   }
+
+  .fa-heart:hover{
+    cursor: pointer;
+  }
+
+  .fa-heart-o:hover{
+    cursor: pointer;
+  }
