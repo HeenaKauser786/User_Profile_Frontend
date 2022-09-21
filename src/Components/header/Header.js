@@ -36,56 +36,20 @@ export default function (props) {
             width="50px"
             height="40px"
           />
-          <h5 className="text-white d-inline mx-2">Movie Cruiser</h5>
+          <h5 className="text-white d-inline mx-2">USER APP</h5>
         </a>
         <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-          <ul className="navbar-nav me-auto mb-lg-0">
-            <li className="nav-item d-inline">
-              <Link to="/" className="btn nav-link">
-                <button className="btn nav-link d-inline" aria-current="page">
-                  Home
-                </button>
-              </Link>
-            </li>
-            <li className="nav-item ">
+          <div className="navbar-nav me-auto mb-lg-0">
+            
               {props.loggedStatus ? (
-                <Link to="/favourite" className="btn nav-link">
+                <Link to="/home" className="btn nav-link">
                   <button className="btn nav-link d-inline" aria-current="page">
-                    Favourite
+                    Home
                   </button>
                 </Link>
-              ) : null}
-            </li>
-            <form className="d-flex">
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder={placeholder}
-                onChange={(e) => check(e.target.value)}
-                aria-label="Search"
-              />
-
-              {checkPre ? (
-                <Link to="/">
-                  <button
-                    id="search"
-                    className="btn btn-outline-success"
-                    type="submit"
-                    style={{marginTop:'10px'}}
-                  >
-                    <i className="fa fa-search" aria-hidden="true"></i>
-                  </button>
-                </Link>
-              ) : (
-                <Link to={`/Search/${title}`}>
-                  <button id="search"
-                    className="btn btn-outline-success" type="submit" style={{marginTop:'10px'}}>
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                  </button>
-                </Link>
-              )}
-            </form>
-          </ul>
+                ) : null}
+            
+          </div>
 
           <ul className="navbar-nav ml-auto mb-lg-0">
           <li className="nav-item">
@@ -100,7 +64,7 @@ export default function (props) {
               </button>
             ) : (
               <button className="btn nav-link d-inline" aria-current="page">
-              <Link to="/login" type="button" className="btn btn-light">
+              <Link to="/" type="button" className="btn btn-light">
                 
                   Login
                 

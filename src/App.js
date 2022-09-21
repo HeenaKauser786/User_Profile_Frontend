@@ -2,7 +2,6 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import Header from "./Components/header/Header";
 import Footer from "./Components/footer/Footer";
-import Home from "./Components/home/Home";
 import Login from "./Components/login/Login";
 import {
   BrowserRouter as Router,
@@ -10,6 +9,7 @@ import {
   Redirect,
   Switch,
 } from "react-router-dom";
+import Home from "./Components/home/Home";
 import Register from "./Components/register/Register";
 import SearchResult from "./Components/searchresult/SearchResult";
 import Favourite from "./Components/favourite/Favourite";
@@ -41,34 +41,15 @@ function App() {
         <Switch>
           <Route
             exact
-            path="/"
+            path="/home"
             component={() => <Home loggedStatus={status} />}
           />
           <Route
             exact
-            path="/login"
+            path="/"
             component={() => <Login loginStatus={loginStatusFunc}></Login>}
           />
           <Route exact path="/register" component={Register} />
-          <Route exact path="/Search" component={() => <Redirect to="/" />} />
-          <Route
-            exact
-            path="/Search/:title"
-            component={() => <SearchResult loggedStatus={status} />}
-          />
-          <Route
-            exact
-            path="/favourite"
-            component={() =>
-              localStorage.getItem("token") &&
-              localStorage.getItem("token") !== "undefined" ? (
-                <Favourite />
-              ) : (
-                <Redirect to="/login" />
-              )
-            }
-          />
-          <Route exact path="/movieDetail/:movieid" component={MovieDetail} />
           <Route
             exact
             path="/logout"

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import "./Login.css";
+
 // import {toast} from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 
@@ -50,13 +51,13 @@ export default function Login(props) {
         }
       })
       .then((data) => {
-        console.log(data);
+        console.log(...data.token);
         setvisibleLoginError(false);
         localStorage.setItem("token", data.token);
         props.loginStatus(true);
         localStorage.setItem("userName", email.substring(0, email.indexOf("@")));
         localStorage.setItem("email", email);
-        history.push("/")
+        history.push("/home")
       })
       .catch((error) => console.log(error.status));
     
@@ -69,7 +70,7 @@ export default function Login(props) {
       document.getElementById("errorEmail").innerHTML =
         "Email field should not be empty.";
       setemail("");
-    } else if (!data.match("^[a-zA-Z0-9._%+-]+[a-zA-Z]+@[a-zA-Z]{3,}.(com|in|org)$")) {
+    } else if (!data.match("^[a-zA-Z0-9._%+-]+[a-zA-Z0-9]+@[a-zA-Z]{3,}.(com|in|org)$")) {
       document.getElementById("errorEmail").innerHTML = "Email is not correct.";
       setemail("");
     } else {
@@ -101,7 +102,7 @@ export default function Login(props) {
   }
   return (
     
-    <div className="bg-danger" id="LoginPage" style={{height:'100vh',backgroundImage:`url(${process.env.PUBLIC_URL}/image/loginBack.jpeg)`}}>
+    <div className="bg-danger" id="LoginPage" style={{height:'100vh',backgroundImage:`url(${process.env.PUBLIC_URL}/image/loginBack.png)`}}>
       <div className="container">
         <div className="row">
           <div className=" offset-sm-1 col-md-8 offset-md-2" style={{marginTop:'5vh',marginBottom:"4vh"}}>

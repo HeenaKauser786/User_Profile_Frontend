@@ -3,7 +3,9 @@ import { useHistory } from "react-router-dom";
 import "./Register.css";
 
 export default function Register() {
+  const [image , setImage] = useState("");
   const [name, setname] = useState("");
+  const [address,setAddress] = useState("");
   const [email, setemail] = useState("");
   const [cpassword, setcpassword] = useState("");
   const [password, setpassword] = useState(false);
@@ -13,13 +15,19 @@ export default function Register() {
   const [submit, setsubmit] = useState(false);
   const history = useHistory();
 
+  function onChangeHandler(e){
+    console.log(e.target.files[0]);
+    setImage(e.target.files[0]);
+  }
+
   useEffect(() => {
     if (
       name !== "" &&
       email !== "" &&
       cpassword !== "" &&
       phone !== "" &&
-      age !== ""
+      age !== ""&&
+      address!== ""
     ) {
       setsubmit(true);
       document.getElementById("errorForm").innerHTML = "";
@@ -27,15 +35,17 @@ export default function Register() {
       setsubmit(false);
       document.getElementById("errorForm").innerHTML = "";
     }
-  }, [name, email, cpassword, phone, age, visibleLoginError]);
+  }, [name, email, cpassword, phone, age,address, visibleLoginError]);
 
-  const user = {
-    name: `${name}`,
-    email: `${email}`,
-    password: `${cpassword}`,
-    phone: `${phone}`,
-    age: `${age}`,
-  };
+  const formData = new FormData();
+  
+  formData.append('name',name);
+  formData.append('address',address);
+  formData.append('email',email);
+  formData.append('password',cpassword);
+  formData.append('phone',phone)
+  formData.append('age',age);
+  formData.append('image',image);
 
   function check() {
     
@@ -43,10 +53,12 @@ export default function Register() {
     fetch("http://localhost:8765/api/v1/register", {
       method: "post",
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        // Accept: "application/json",
+        // "Content-Type": "application/json",
+        // 'Content-Type': 'multipart/form-data',
       },
-      body: JSON.stringify(user),
+      // body: JSON.stringify(user),
+      body : formData
     })
       .then((res) => {
         console.log(res);
@@ -68,7 +80,7 @@ export default function Register() {
           console.log("data"+data);
         console.log("hell");
         setvisibleLoginError(false);
-        history.push("/login");
+        history.push("/");
         }, 1000);
       })
       .catch((error) => console.log(error.status));
@@ -91,12 +103,28 @@ export default function Register() {
       setname(data);
     }
   }
+  function addressValidation(data) {
+    if (data === "") {
+      document.getElementById("errorAddress").innerHTML =
+        "Address field should not be empty.";
+      setAddress("");
+    }
+    //  else if (!data.match("^([a-zA-Z0-9#\\s]+)$")) {
+    //   document.getElementById("errorName").innerHTML =
+    //     "User name can only contain alphabets.<br > A space is allowed between first name and last name.";
+    //   setname("");
+    // } 
+    else {
+      document.getElementById("errorAddress").innerHTML = "";
+      setAddress(data);
+    }
+  }
   function emailValidation(data) {
     if (data === "") {
       document.getElementById("errorEmail").innerHTML =
         "Email field should not be empty.";
       setemail("");
-    } else if (!data.match("^[a-zA-Z0-9._%+-]+[a-zA-Z]+@[a-zA-Z]{3,}.(com|in|org)$")) {
+    } else if (!data.match("^[a-zA-Z0-9._%+-]+[a-zA-Z0-9]+@[a-zA-Z]{3,}.(com|in|org)$")) {
       document.getElementById("errorEmail").innerHTML = "Email is not correct.";
       setemail("");
     } else {
@@ -198,7 +226,7 @@ export default function Register() {
     <div
       id="formContainer"
       style={{
-        backgroundImage: `url(${process.env.PUBLIC_URL}/image/registerBackground.jpg)`,
+        backgroundImage: `url(${process.env.PUBLIC_URL}/image/loginBack.png)`,
       }}
     >
       <form id="form" className="rounded shadow" action="#" method="POST">
@@ -230,6 +258,14 @@ export default function Register() {
               </div>
             </div>
           )}
+          <div id="image">
+            <input
+              type="file"
+              className="form-control"
+              onChange={e=>onChangeHandler(e)}
+            />
+
+          </div>
           <div id="fullName">
             <input
               type="text"
@@ -325,6 +361,18 @@ export default function Register() {
             />
             <div style={{ textAlign: "left", marginTop: "-10px" }}>
               <p className="mx-2 text-danger" id="errorPhone"></p>
+            </div>
+            <input
+              className="form-control"
+              type="text"
+              onChange={(e) => addressValidation(e.target.value)}
+              name="address"
+              id="address"
+              placeholder="Enter current address"
+              required
+            />
+            <div style={{ textAlign: "left", marginTop: "-10px" }}>
+              <p className="mx-2 text-danger" id="errorAddress"></p>
             </div>
           </div>
 
